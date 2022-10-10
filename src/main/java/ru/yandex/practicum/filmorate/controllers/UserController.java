@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.validators.UserValidator;
 import ru.yandex.practicum.filmorate.validators.exeptions.ValidationException;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,9 +21,9 @@ public class UserController {
     private int id = 1;
 
     @GetMapping
-    public Map<Integer, User> getUsers() {
+    public ArrayList<User> getUsers() {
         log.info("Получен запрос на список поьзователей.");
-        return users;
+        return new ArrayList<User>(users.values());
     }
 
     @PostMapping

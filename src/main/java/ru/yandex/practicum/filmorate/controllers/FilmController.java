@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.validators.FilmValidator;
 import ru.yandex.practicum.filmorate.validators.exeptions.ValidationException;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,9 +20,9 @@ public class FilmController {
     private int id = 1;
 
     @GetMapping
-    public Map<Integer, Film> getFilms() {
+    public ArrayList<Film> getFilms() {
         log.info("Получен запрос на список фильмов");
-       return films;
+       return new ArrayList<Film>(films.values());
     }
 
     @PostMapping
