@@ -5,7 +5,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.time.LocalDate;
 
 public class FilmValidator {
-    private final static LocalDate REALISE_DATE_IS_NOT_BEFORE = LocalDate.of(1985,12,28);
+    private final static LocalDate REALISE_DATE_IS_NOT_BEFORE = LocalDate.of(1895,12,28);
 
     public boolean validate(Film film) {
         if(validateName(film) && validateMaxLength(film) && validateRealise(film) && validateDuration(film)) {
@@ -28,6 +28,6 @@ public class FilmValidator {
     }
 
     private boolean validateDuration(Film film) {
-        return film.getDuration().getSeconds() >= 0;
+        return film.getDuration() >= 0;
     }
 }

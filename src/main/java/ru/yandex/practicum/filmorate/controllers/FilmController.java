@@ -6,8 +6,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.validators.FilmValidator;
 import ru.yandex.practicum.filmorate.validators.exeptions.ValidationException;
 
-import java.time.Duration;
-import java.time.LocalDate;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,39 +20,36 @@ public class FilmController {
 
     @GetMapping
     public Map<Integer, Film> getFilms() {
+        log.info("Получен запрос на список фильмов");
        return films;
     }
 
     @PostMapping
-    public Film saveFilm(@RequestBody Film film) {
-        try{
+    public Film saveFilm(@Valid @RequestBody Film film) {
             if(validator.validate(film)) {
-                film.setId(idGenerator());
-               films.put(film.getId(), film);
+                    film.setId(idGenerator());
+                    films.put(film.getId(), film);
+                    log.info("Фильм сохранен");
             } else {
+                log.warn("Ошибка валидации.");
                throw new ValidationException("Ошибка валидации.");
             }
-        }catch (ValidationException | NullPointerException exception) {
-            System.out.println(exception.getMessage());
-        }
         return film;
     }
 
     @PutMapping
-    public Film updateFilm(@RequestBody Film film) {
-        try {
+    public Film updateFilm(@Valid @RequestBody Film film) {
             if(validator.validate(film)) {
                 if(films.containsKey(film.getId())) {
                     films.replace(film.getId(), film);
+                    log.info("Информация о фильме изменена");
                 } else {
-                    films.put(film.getId(), film);
+                    log.warn("Ошибка валидации.");
+                    throw new ValidationException("Ошибка валидации.");
                 }
             } else {
                 throw new ValidationException("Ошибка валидации.");
             }
-        }catch (ValidationException | NullPointerException exception) {
-            System.out.println(exception.getMessage());
-        }
         return film;
     }
 
