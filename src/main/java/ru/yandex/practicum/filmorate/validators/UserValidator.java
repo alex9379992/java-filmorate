@@ -8,11 +8,7 @@ public class UserValidator {
 
     public boolean validate(User user) {
         validateName(user);
-        if(validateEmail(user) && validateLogin(user) && validateData(user)) {
-            return true;
-        } else {
-            return false;
-        }
+        return validateEmail(user) && validateLogin(user) && validateData(user);
     }
 
     private boolean validateEmail(User user) {
