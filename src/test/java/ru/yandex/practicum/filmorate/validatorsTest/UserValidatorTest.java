@@ -15,26 +15,34 @@ class UserValidatorTest {
     @Test
     @DisplayName("Проверка в нормальных условиях.")
     void validateTest() {
-        boolean isValidate = validator.validate(new User("mail@mail.ru",
-                "dolore",
-                LocalDate.parse("1946-08-20")));
+        User user = User.builder()
+                .email("mail@mail.ru")
+                .login("dolore")
+                .birthday(LocalDate.parse("1946-08-20"))
+                .build();
+        boolean isValidate = validator.validate(user);
         assertTrue(isValidate, "Должен быть true.");
     }
     @Test
     @DisplayName("Проверка Email.")
     void validateEmailTest() {
-        boolean isValidate = validator.validate(new User("mail.ru",
-                "dolore",
-                LocalDate.parse("1946-08-20")));
+        User user = User.builder()
+                .email("mail.ru")
+                .login("dolore")
+                .birthday(LocalDate.parse("1946-08-20"))
+                .build();
+        boolean isValidate = validator.validate(user);
         assertFalse(isValidate, "Должен быть false.");
     }
 
     @Test
     @DisplayName("Проверка логина")
     void validateLoginTest() {
-        User user = new User("mail@mail.ru",
-                "dolore ullamco",
-                LocalDate.parse("2446-08-20"));
+        User user = User.builder()
+                .email("mail@mail.ru")
+                .login("dolorev ullamco")
+                .birthday(LocalDate.parse("1946-08-20"))
+                .build();
         boolean isValidate = validator.validate(user);
         assertFalse(isValidate, "Должен быть false.");
     }
@@ -42,9 +50,11 @@ class UserValidatorTest {
     @Test
     @DisplayName("Проверка имени пользователя")
     void validateNameTest() {
-        User user = new User("mail@mail.ru",
-                "dolore",
-                LocalDate.parse("1946-08-20"));
+        User user = User.builder()
+                .email("mail@mail.ru")
+                .login("dolore")
+                .birthday(LocalDate.parse("1946-08-20"))
+                .build();
         boolean isValidate = validator.validate(user);
         assertTrue(isValidate, "Должен быть true.");
         assertEquals(user.getName(), user.getLogin(), "Имя должно быть dolore");
@@ -53,9 +63,12 @@ class UserValidatorTest {
     @Test
     @DisplayName("Проверка даты рождения")
     void validateDataTest() {
-        boolean isValidate = validator.validate(new User("mail@mail.ru",
-                "dolore",
-                LocalDate.parse("2446-08-20")));
+        User user = User.builder()
+                .email("mail@mail.ru")
+                .login("dolore")
+                .birthday(LocalDate.parse("2446-08-20"))
+                .build();
+        boolean isValidate = validator.validate(user);
         assertFalse(isValidate, "Должен быть false.");
     }
 }
