@@ -8,11 +8,7 @@ public class FilmValidator {
     private final static LocalDate REALISE_DATE_IS_NOT_BEFORE = LocalDate.of(1895,12,28);
 
     public boolean validate(Film film) {
-        if(validateName(film) && validateMaxLength(film) && validateRealise(film) && validateDuration(film)) {
-            return true;
-        } else {
-            return false;
-        }
+        return validateName(film) && validateMaxLength(film) && validateRealise(film) && validateDuration(film);
     }
 
     private boolean validateName(Film film) {
