@@ -3,13 +3,11 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.exeptions.SearchException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,7 +32,6 @@ public class FilmService {
             log.warn("error : пользователь/фильм не найден");
             throw new SearchException("Ошибка поиска по id");
         }
-
     }
 
     public void deleteLike(int id, int userId) {
@@ -53,7 +50,6 @@ public class FilmService {
             log.warn("error : пользователь/фильм не найден");
             throw new SearchException("Ошибка поиска по id");
         }
-
     }
 
     public List<Film> getPopularFilms( Integer count) {
@@ -62,11 +58,11 @@ public class FilmService {
             log.info("Получен запрос на список популярных фильмов размером" + count);
             return allFilms.stream().
                     sorted((f1, f2) -> {
-                        Integer f1size = f1.getLikesList().size();
-                        Integer f2size = f2.getLikesList().size();
-                        int comp = f1size.compareTo(f2size);
-                        return -1 * comp;
-                    }).
+                Integer f1size = f1.getLikesList().size();
+                Integer f2size = f2.getLikesList().size();
+                int comp = f1size.compareTo(f2size);
+                return -1 * comp;
+            }).
                     limit(count).
                     collect(Collectors.toList());
         } else {
@@ -81,6 +77,7 @@ public class FilmService {
                     collect(Collectors.toList());
         }
     }
+
     public Film getFilm(int id) {
         if(filmStorage.getFilms().containsKey(id)) {
             log.info("Получен запрос на фильм по id" + id);

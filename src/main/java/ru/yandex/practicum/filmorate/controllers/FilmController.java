@@ -41,13 +41,11 @@ public class FilmController {
 
     @PostMapping
     public Film saveFilm(@Valid @RequestBody Film film) {
-        filmService.saveFilm(film);
-        return film;
+        return filmService.saveFilm(film);
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        filmService.updateFilm(film);
-        return film;
+       return filmService.updateFilm(film);
     }
 }

@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.validators.UserValidator;
 import ru.yandex.practicum.filmorate.exeptions.ValidationException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -16,6 +17,7 @@ import java.util.Map;
 public class InMemoryUserStorage implements UserStorage{
 
     private final UserValidator validator = new UserValidator();
+    private final Map<Integer, User> users = new HashMap<>();
     private int id = 1;
 
     @Override
@@ -63,6 +65,7 @@ public class InMemoryUserStorage implements UserStorage{
 
     @Override
     public int idGenerator() {
+        log.info("Пользователю присвоен id" + id + 1);
         return id++;
     }
 

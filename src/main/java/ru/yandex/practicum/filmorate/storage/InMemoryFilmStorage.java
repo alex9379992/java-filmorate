@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.validators.FilmValidator;
 import ru.yandex.practicum.filmorate.exeptions.ValidationException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -15,6 +16,7 @@ import java.util.Map;
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage{
     private final FilmValidator validator = new FilmValidator();
+    private final Map<Integer, Film> films = new HashMap<>();
     private int id = 1;
 
     @Override
@@ -61,7 +63,7 @@ public class InMemoryFilmStorage implements FilmStorage{
 
     @Override
     public int idGenerator() {
-        log.info("Присвоен id " + id + 1);
+        log.info("Фильму присвоен id " + id + 1);
         return id++;
     }
 
