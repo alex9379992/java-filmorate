@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface UserStorage {
-    final Map<Integer, User> users = new HashMap<>();
+    Map<Integer, User> users = new HashMap<>();
 
-    ArrayList<User> getUsers();
-    void saveFilm(User user);
+    User getUser(int id);
+    ArrayList<User> getUsersList();
+    void saveUser(User user);
     void updateFilm(User user);
     int idGenerator();
+    Map<Integer, User> getUsers();
 }

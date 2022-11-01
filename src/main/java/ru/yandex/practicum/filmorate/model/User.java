@@ -6,10 +6,14 @@ import lombok.Data;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 @Builder
 public class User {
     private int id;
+    private final Set<Integer> friendsId = new HashSet<>();
     @NotNull
     @Email
     private  String email;
@@ -18,6 +22,4 @@ public class User {
     private String name;
     @NotNull
     private  LocalDate birthday;
-
-
 }
