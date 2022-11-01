@@ -11,7 +11,7 @@ public interface UserStorage {
     User getUser(int id);
     ArrayList<User> getUsersList();
     void saveUser(User user);
-    void updateFilm(User user);
+    void updateUser(User user);
     int idGenerator();
     Map<Integer, User> getUsers();
 }

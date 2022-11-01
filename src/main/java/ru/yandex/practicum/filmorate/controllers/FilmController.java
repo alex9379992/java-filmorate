@@ -1,78 +1,53 @@
 package ru.yandex.practicum.filmorate.controllers;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exeptions.SearchException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@Slf4j
 @RequestMapping("/films")
+@RequiredArgsConstructor
 public class FilmController {
-    private final FilmStorage filmStorage;
-    private final FilmService filmService;
-    private final UserStorage userStorage;
 
-    @Autowired
-    public FilmController(InMemoryFilmStorage filmStorage, FilmService filmService, UserStorage userStorage) {
-        this.filmStorage = filmStorage;
-        this.filmService = filmService;
-        this.userStorage = userStorage;
-    }
+    private final FilmService filmService;
 
     @GetMapping("/popular")
     public List<Film> getPopularFilms(@RequestParam(required = false) Integer count) {
-         return filmService.getPopularFilms(filmStorage.getFilms(), count);
+         return filmService.getPopularFilms(count);
     }
     @PutMapping("{id}/like/{userId}")
     public void addLikes(@PathVariable int id, @PathVariable int userId) {
-         if(userStorage.getUsers().containsKey(userId) || filmStorage.getFilms().containsKey(id)) {
-              filmService.putLike(filmStorage.getFilm(id), userStorage.getUser(userId));
-        } else {
-            log.warn("error : пользователь/фильм не найден");
-            throw new SearchException("Ошибка поиска по id");
-        }
+       filmService.putLike(id, userId);
     }
 
     @DeleteMapping("{id}/like/{userId}")
     public void deleteLike(@PathVariable int id, @PathVariable int userId) {
-         if(userStorage.getUsers().containsKey(userId) || filmStorage.getFilms().containsKey(id)) {
-            filmService.deleteLike(filmStorage.getFilm(id), userStorage.getUser(userId));
-        } else {
-            log.warn("error : пользователь/фильм не найден");
-            throw new SearchException("Ошибка поиска по id");
-        }
+         filmService.deleteLike(id, userId);
     }
     @GetMapping("/{id}")
     public Film getFilm(@PathVariable int id) {
-        return filmStorage.getFilm(id);
+        return filmService.getFilm(id);
     }
-
-
 
     @GetMapping
     public ArrayList<Film>  getFilms() {
-       return filmStorage.getFilmsList();
+       return filmService.getFilms();
     }
 
     @PostMapping
     public Film saveFilm(@Valid @RequestBody Film film) {
-            filmStorage.saveFilm(film);
+        filmService.saveFilm(film);
         return film;
     }
 
     @PutMapping
     public Film updateFilm(@Valid @RequestBody Film film) {
-        filmStorage.updateFilm(film);
+        filmService.updateFilm(film);
         return film;
     }
 }

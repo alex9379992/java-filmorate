@@ -8,9 +8,8 @@ import ru.yandex.practicum.filmorate.validators.FilmValidator;
 import ru.yandex.practicum.filmorate.exeptions.ValidationException;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Map;
-import java.util.TreeSet;
+
 
 @Component
 @Slf4j
@@ -21,9 +20,7 @@ public class InMemoryFilmStorage implements FilmStorage{
     @Override
     public ArrayList<Film> getFilmsList() {
         log.info("Получен запрос на список фильмов");
-        ArrayList<Film> filmsList = new ArrayList<>();
-        filmsList.addAll(films.values());
-        return filmsList;
+        return new ArrayList<>(films.values());
     }
 
 

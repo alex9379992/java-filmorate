@@ -20,14 +20,13 @@ public class InMemoryUserStorage implements UserStorage{
 
     @Override
     public ArrayList<User> getUsersList() {
-        log.info("Получен запрос на список поьзователей.");
-        return new ArrayList<User>(users.values());
+
+        return new ArrayList<>(users.values());
     }
 
     @Override
     public User getUser(int id) {
        if(users.containsKey(id)) {
-           log.info("Подучен запрос на пользователя " + id);
            return users.get(id);
        } else {
            log.warn("Ошибка поиска пользователя: не найден под id " + id);
@@ -40,7 +39,7 @@ public class InMemoryUserStorage implements UserStorage{
         if (validator.validate(user)) {
             user.setId(idGenerator());
             users.put(user.getId(), user);
-            log.info("Пользователь сохранен.");
+            log.info("Пользователь сохранен под id " + user.getId());
         } else {
             log.warn("Ошибка валидации.");
             throw new ValidationException("Ошибка валидации.");
@@ -48,7 +47,7 @@ public class InMemoryUserStorage implements UserStorage{
     }
 
     @Override
-    public void updateFilm(User user) {
+    public void updateUser(User user) {
         if (validator.validate(user)) {
             if (users.containsKey(user.getId())) {
                 users.replace(user.getId(), user);

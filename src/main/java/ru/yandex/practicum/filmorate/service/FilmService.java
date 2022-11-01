@@ -1,34 +1,63 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.exeptions.SearchException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class FilmService {
-    public void putLike(Film film, User user) {
-        log.info("Пользователь " + user.getId() + " поставил лайк фильму " + film.getId());
-        film.getLikesList().add(user.getId());
+    private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
+    @Autowired
+    public FilmService(FilmStorage filmStorage, UserStorage userStorage1) {
+        this.filmStorage = filmStorage;
+        this.userStorage = userStorage1;
     }
 
-    public void deleteLike(Film film, User user) {
-        if (film.getLikesList().contains(user.getId())) {
-            log.info("Пользователь " + user.getId() + " удалил лайк фильму " + film.getId());
-            film.getLikesList().remove(user.getId());
+
+    public void putLike(int id , int userId) {
+        if(userStorage.getUsers().containsKey(userId) || filmStorage.getFilms().containsKey(id)) {
+            log.info("Пользователь " + userStorage.getUser(userId).getId() + " поставил лайк фильму " +
+                    filmStorage.getFilm(id).getId());
+            filmStorage.getFilm(id).getLikesList().add(userStorage.getUser(userId).getId());
         } else {
-            log.warn("Пользователь " + user.getId() + " не смог удалить лайк фильму " + film.getId());
-            throw new SearchException("Пользователь " + user.getId() + " не смог удалить лайк фильму " + film.getId());
+            log.warn("error : пользователь/фильм не найден");
+            throw new SearchException("Ошибка поиска по id");
         }
+
     }
 
-    public List<Film> getPopularFilms(Map<Integer, Film> films, Integer count) {
-        List<Film> allFilms = new ArrayList<>(films.values());
+    public void deleteLike(int id, int userId) {
+        if(userStorage.getUsers().containsKey(userId) || filmStorage.getFilms().containsKey(id)) {
+            if (filmStorage.getFilm(id).getLikesList().contains(userStorage.getUser(userId).getId())) {
+                log.info("Пользователь " + userStorage.getUser(userId).getId() + " удалил лайк фильму " +
+                        filmStorage.getFilm(id).getId());
+                filmStorage.getFilm(id).getLikesList().remove(userStorage.getUser(userId).getId());
+            } else {
+                log.warn("Пользователь " + userStorage.getUser(userId).getId() + " не смог удалить лайк фильму " +
+                        filmStorage.getFilm(id).getId());
+                throw new SearchException("Пользователь " + userStorage.getUser(userId).getId() +
+                        " не смог удалить лайк фильму " + filmStorage.getFilm(id).getId());
+            }
+        } else {
+            log.warn("error : пользователь/фильм не найден");
+            throw new SearchException("Ошибка поиска по id");
+        }
+
+    }
+
+    public List<Film> getPopularFilms( Integer count) {
+        List<Film> allFilms = new ArrayList<>(filmStorage.getFilms().values());
         if (count != null) {
             log.info("Получен запрос на список популярных фильмов размером" + count);
             return allFilms.stream().
@@ -51,5 +80,30 @@ public class FilmService {
                     }).
                     collect(Collectors.toList());
         }
+    }
+    public Film getFilm(int id) {
+        if(filmStorage.getFilms().containsKey(id)) {
+            log.info("Получен запрос на фильм по id" + id);
+            return filmStorage.getFilm(id);
+        } else {
+            log.warn("По id " + id + " фильм не найден!");
+            throw new SearchException("По id " + id + " фильм не найден!");
+        }
+    }
+    public ArrayList<Film>  getFilms() {
+        log.info("Получен запрос насписок фильмов");
+        return filmStorage.getFilmsList();
+    }
+
+    public Film saveFilm(Film film) {
+        log.info("Получен запрос на сохранение фильма.");
+        filmStorage.saveFilm(film);
+        return film;
+    }
+
+    public Film updateFilm(Film film) {
+        log.info("Получен запрос на изменение о фильме под id " + film.getId());
+        filmStorage.updateFilm(film);
+        return film;
     }
 }
