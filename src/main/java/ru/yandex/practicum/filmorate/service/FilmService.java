@@ -22,7 +22,6 @@ public class FilmService {
         this.userStorage = userStorage1;
     }
 
-
     public void putLike(int id , int userId) {
         if(userStorage.getUsers().containsKey(userId) || filmStorage.getFilms().containsKey(id)) {
             log.info("Пользователь " + userStorage.getUser(userId).getId() + " поставил лайк фильму " +
@@ -87,6 +86,7 @@ public class FilmService {
             throw new SearchException("По id " + id + " фильм не найден!");
         }
     }
+
     public ArrayList<Film>  getFilms() {
         log.info("Получен запрос насписок фильмов");
         return filmStorage.getFilmsList();
