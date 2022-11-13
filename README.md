@@ -1,5 +1,5 @@
 # java-filmorate  
-Здравствуйте. Данное приложение помогает хранить информацию о фильмах и дружить пользователям.   Тут имеются следующие классы:  
+Здравствуйте. Данное приложение помогает хранить информацию о фильмах и дружить пользователям. Тут имеются следующие классы:  
 1) [ER-диаграмма](C:\Users\alexx\IdeaProjects\java-filmorate\Filmorate ER-diagram.png) :
     Описывает схему базы данных приложения.  
 2) [FilmConroller](C:\Users\alexx\IdeaProjects\java-filmorate\src\main\java\ru\yandex\practicum\filmorate\controllers\FilmController.java) : Описывает работу API, связанную с фильмами.
