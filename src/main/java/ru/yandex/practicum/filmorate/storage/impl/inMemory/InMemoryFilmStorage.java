@@ -1,9 +1,9 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.impl.inMemory;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exeptions.SearchException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
 import ru.yandex.practicum.filmorate.validators.FilmValidator;
 import ru.yandex.practicum.filmorate.exeptions.ValidationException;
 
@@ -11,13 +11,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
-@Component
 @Slf4j
-public class InMemoryFilmStorage implements FilmStorage{
+public class InMemoryFilmStorage implements FilmStorage {
     private final FilmValidator validator = new FilmValidator();
     private final Map<Integer, Film> films = new HashMap<>();
     private int id = 1;
+
+    @Override
+    public void addLike(int idFilm, int idUser) {
+    }
 
     @Override
     public ArrayList<Film> getFilmsList() {
@@ -35,11 +37,12 @@ public class InMemoryFilmStorage implements FilmStorage{
         throw new SearchException("Ошибка поиска фильма: не найден под id " + id);
     }
     @Override
-    public void saveFilm(Film film) {
+    public Film saveFilm(Film film) {
         if(validator.validate(film)) {
             film.setId(idGenerator());
             films.put(film.getId(), film);
             log.info("Фильм сохранен");
+            return film;
         } else {
             log.warn("Ошибка валидации.");
             throw new ValidationException("Ошибка валидации.");
@@ -47,21 +50,22 @@ public class InMemoryFilmStorage implements FilmStorage{
     }
 
     @Override
-    public void updateFilm(Film film) {
+    public Film updateFilm(Film film) {
         if(validator.validate(film)) {
             if(films.containsKey(film.getId())) {
                 films.replace(film.getId(), film);
                 log.info("Информация о фильме изменена");
+                return film;
             } else {
                 log.warn("error : фильм с id" + film.getId() + " не найден");
                 throw new SearchException("error : фильм с id" + film.getId() + " не найден");
             }
         } else {
+            log.warn("Ошибка валидации");
             throw new ValidationException("Ошибка валидации.");
         }
     }
 
-    @Override
     public int idGenerator() {
         log.info("Фильму присвоен id " + id + 1);
         return id++;
@@ -70,5 +74,10 @@ public class InMemoryFilmStorage implements FilmStorage{
     @Override
     public Map<Integer, Film> getFilms() {
         return films;
+    }
+
+    @Override
+    public void deleteLike(int filmId, int userId) {
+        getFilm(filmId).getLikesList().remove(userId);
     }
 }

@@ -16,24 +16,16 @@ class FilmValidatorTest {
     @Test
     @DisplayName("Проверка в нормальных условиях.")
     void validateTest() {
-        Film film = Film.builder()
-                .name("nisi eiusmod")
-                .description("adipisicing")
-                .releaseDate(LocalDate.parse("1967-03-25"))
-                .duration(100)
-                .build();
+        Film film = new Film(1, "nisi eiusmod", "adipisicing", LocalDate.parse("1967-03-25"),
+                                 100);
         boolean isValidate = validator.validate(film);
         assertTrue(isValidate, "Должен быть true.");
     }
     @Test
     @DisplayName("Проверка на пустое имя.")
     void validateNameTest() {
-        Film film = Film.builder()
-                .name("")
-                .description("Description")
-                .releaseDate(LocalDate.parse("1900-03-25"))
-                .duration(200)
-                .build();
+        Film film = new Film(2, "", "Description", LocalDate.parse("1967-03-25"),
+                200);
         boolean isValidate = validator.validate(film);
         assertFalse(isValidate, "Должен быть false.");
     }
@@ -41,15 +33,11 @@ class FilmValidatorTest {
     @Test
     @DisplayName("Проверка максимальной длинны описания")
     void validateMaxLengthTest() {
-        Film film = Film.builder()
-                .name("Film name")
-                .description("Пятеро друзей ( комик-группа «Шарло»), приезжают в город Бризуль. " +
-                        "Здесь они хотят разыскать господина Огюста Куглова, который задолжал им деньги, " +
-                        "а именно 20 миллионов. о Куглов, который за время «своего отсутствия»," +
-                        " стал кандидатом Коломбани.")
-                .releaseDate(LocalDate.parse("1900-03-25"))
-                .duration(200)
-                .build();
+        Film film = new Film(3, "Film name", "Пятеро друзей ( комик-группа «Шарло»), приезжают в город Бризуль. " +
+                "Здесь они хотят разыскать господина Огюста Куглова, который задолжал им деньги, " +
+                "а именно 20 миллионов. о Куглов, который за время «своего отсутствия»," +
+                " стал кандидатом Коломбани.", LocalDate.parse("1967-03-25"),
+                100);
         boolean isValidate = validator.validate(film);
         assertFalse(isValidate, "Должен быть false.");
     }
@@ -57,12 +45,8 @@ class FilmValidatorTest {
     @Test
     @DisplayName("Проверка соответствия даты релиза")
     void validateRealiseTest() {
-        Film film = Film.builder()
-                .name("Name")
-                .description("Description")
-                .releaseDate(LocalDate.parse("1890-03-25"))
-                .duration(200)
-                .build();
+        Film film = new Film(4, "Name", "Description", LocalDate.parse("1890-03-25"),
+                250);
         boolean isValidate = validator.validate(film);
         assertFalse(isValidate, "Должен быть false.");
     }
@@ -70,12 +54,8 @@ class FilmValidatorTest {
     @Test
     @DisplayName("Проверка продолжительности фильма")
     void validateDurationTest() {
-        Film film = Film.builder()
-                .name("Name")
-                .description("Description")
-                .releaseDate(LocalDate.parse("1980-03-25"))
-                .duration(-200)
-                .build();
+        Film film = new Film(1, "nisi eiusmod", "adipisicing", LocalDate.parse("1967-03-25"),
+                -200);
         boolean isValidate = validator.validate(film);
         assertFalse(isValidate, "Должен быть false.");
     }
