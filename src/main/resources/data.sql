@@ -16,6 +16,6 @@ INSERT INTO MPA(name) VALUES ('PG-13') ;
 INSERT INTO MPA(name) VALUES ('R') ;
 INSERT INTO MPA(name) VALUES ('NC-17') ;
 
--- INSERT INTO USERS(EMAIL, LOGIN, NAME, BIRTHDAY) VALUES ( 'mail@mail.ru','dolore','Nick Name','1946-08-20' );
--- INSERT INTO USERS(EMAIL, LOGIN, NAME, BIRTHDAY) VALUES ( 'gmail@mail.ru','dalore','Tom Name','1946-08-21' );
--- INSERT INTO USERS(EMAIL, LOGIN, NAME, BIRTHDAY) VALUES ( 'yandexl@mail.ru','delore','Jack Name','1946-08-22' );
+INSERT INTO USERS(EMAIL, LOGIN, NAME, BIRTHDAY) VALUES ( 'mail@mail.ru','dolore','Nick Name','1946-08-20' );
+INSERT INTO USERS(EMAIL, LOGIN, NAME, BIRTHDAY) VALUES ( 'gmail@mail.ru','dalore','Tom Name','1946-08-21' );
+INSERT INTO USERS(EMAIL, LOGIN, NAME, BIRTHDAY) VALUES ( 'yandexl@mail.ru','delore','Jack Name','1946-08-22' );
