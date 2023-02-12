@@ -1,12 +1,16 @@
 package ru.yandex.practicum.filmorate.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exeptions.SearchException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -26,12 +30,12 @@ public class UserController {
     }
 
     @GetMapping("{id}/friends")
-    public ArrayList<User> getFriends(@PathVariable int id){
+    public List<User> getFriends(@PathVariable int id){
         return userService.getFriends(id);
     }
 
     @GetMapping("{id}/friends/common/{otherId}")
-    public ArrayList<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+    public List<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
         return userService.getCommonFriends(id, otherId);
     }
     @GetMapping("/{id}")
@@ -39,7 +43,7 @@ public class UserController {
         return userService.getUser(id);
     }
     @GetMapping
-    public ArrayList<User> getUsers() {
+    public List<User> getUsers() {
         return userService.getUsers();
     }
 
@@ -51,5 +55,10 @@ public class UserController {
     @PutMapping
     public User updateUser(@Valid @RequestBody User user) {
         return userService.updateUser(user);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Map<String, String>> handleSearchException(final SearchException e) {
+        return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.NOT_FOUND);
     }
 }
